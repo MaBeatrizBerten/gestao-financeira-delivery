@@ -1,0 +1,42 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lancamento {
+  id              Int     @id @default(autoincrement())
+  data            String
+  tipo            String
+  categoria       String
+  descricao       String?
+  valor           Float
+  formaPagamento  String  @default("Pix") @map("forma_pagamento")
+  status          String  @default("Pago")
+  qtdPedidos      Int     @default(1)   @map("qtd_pedidos")
+
+  @@map("lancamentos")
+}
+
+model FechamentoCaixa {
+  id                  Int     @id @default(autoincrement())
+  data                String
+  fundoTroco          Float   @default(0) @map("fundo_troco")
+  dinheiroGaveta      Float   @default(0) @map("dinheiro_gaveta")
+  totalDinheiro       Float   @default(0) @map("total_dinheiro")
+  totalPix            Float   @default(0) @map("total_pix")
+  totalCartao         Float   @default(0) @map("total_cartao")
+  totalIfood          Float   @default(0) @map("total_ifood")
+  totalSaidasDinheiro Float   @default(0) @map("total_saidas_dinheiro")
+  sangria             Float   @default(0)
+  diferenca           Float   @default(0)
+  observacao          String?
+  criadoEm            String  @map("criado_em")
+
+  @@map("fechamentos_caixa")
+}
